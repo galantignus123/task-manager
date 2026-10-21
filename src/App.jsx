@@ -1,4 +1,6 @@
+
 import React, { useState } from "react";
+
 const initialTasks = [
   {
     id: 1,
@@ -51,46 +53,48 @@ export default function App() {
 
   // ================================================================
   // STUDENT AREA START
-  // השלימו רק את גוף הפונקציות באזור זה.
-  // כל פונקציה מקבלת את הנתונים הדרושים לה ומחזירה תוצאה.
   // ================================================================
 
   function getAllTasks(tasks) {
-   return tasks
+    return tasks;
   }
 
   function getIncompleteTasks(tasks) {
-    const result = tasks.filter(tasks => !tasks.completed);
-    return result
+    return tasks.filter(task => !task.completed);
   }
 
   function findTaskByTitle(tasks, title) {
-    return tasks.find(task => task.title.toLowerCase().includes(title.toLowerCase()));
-   }
+    return tasks.find(task =>
+      task.title.toLowerCase().includes(title.toLowerCase())
+    );
+  }
 
   function countCompletedTasks(tasks) {
-    // TODO
+    return tasks.filter(task => task.completed).length;
   }
 
   function addTask(tasks, newTask) {
-    // TODO
+    return [...tasks, newTask];
   }
 
   function removeTask(tasks, id) {
-    // TODO
+    const filtered = tasks.filter((task)=>task.id!==id)
+    return filtered;
   }
 
   function toggleTaskCompleted(tasks, id) {
-    // TODO
+    //map filter find foreach
+    const updated = tasks.map((task) =>task.id===id? {...task, completed:!task.completed} : task )
+    return updated
   }
 
   function updateTaskPriority(tasks, id, newPriority) {
-    // TODO
+      const newPriority1 = tasks.map((task) =>task.id===id? {...task, priority: newPriority} : task )
+    return newPriority1;
   }
 
   // ================================================================
   // STUDENT AREA END
-  // אין צורך לשנות את הקוד שמתחת לקו זה.
   // ================================================================
 
   function getReadResult() {
@@ -111,6 +115,7 @@ export default function App() {
   const hasValidReadResult = Array.isArray(readResult);
 
   let completedCount;
+
   if (showCompletedCount) {
     completedCount = countCompletedTasks(tasks);
   }
@@ -127,6 +132,7 @@ export default function App() {
 
   function handleSearch(event) {
     event.preventDefault();
+
     const cleanTitle = searchInput.trim();
 
     if (!cleanTitle) {
@@ -152,6 +158,7 @@ export default function App() {
 
   function handleAddTask(event) {
     event.preventDefault();
+
     const cleanTitle = newTitle.trim();
 
     if (!cleanTitle) {
@@ -172,7 +179,7 @@ export default function App() {
     );
 
     if (wasAdded) {
-      setNextId((currentId) => currentId + 1);
+      setNextId(currentId => currentId + 1);
       setNewTitle("");
       setNewPriority("medium");
       setView("all");
@@ -180,7 +187,10 @@ export default function App() {
   }
 
   function handleRemoveTask(id) {
-    applyTasksResult(removeTask(tasks, id), "המשימה נמחקה.");
+    applyTasksResult(
+      removeTask(tasks, id),
+      "המשימה נמחקה."
+    );
   }
 
   function handleToggleTask(id) {
@@ -192,6 +202,7 @@ export default function App() {
 
   function handlePriorityUpdate(event, id) {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
     const selectedPriority = formData.get("priority");
 
@@ -213,15 +224,18 @@ export default function App() {
         <div>
           <h1>Task Manager</h1>
         </div>
-
       </header>
+
       <section className="panel read-panel">
-        <div className="section-heading">
-        </div>
+        <div className="section-heading"></div>
 
         <div className="read-actions">
           <button
-            className={view === "all" ? "button primary" : "button secondary"}
+            className={
+              view === "all"
+                ? "button primary"
+                : "button secondary"
+            }
             type="button"
             onClick={showAllTasks}
           >
@@ -230,7 +244,9 @@ export default function App() {
 
           <button
             className={
-              view === "incomplete" ? "button primary" : "button secondary"
+              view === "incomplete"
+                ? "button primary"
+                : "button secondary"
             }
             type="button"
             onClick={showIncompleteTasks}
@@ -248,21 +264,25 @@ export default function App() {
         </div>
 
         <form className="search-form" onSubmit={handleSearch}>
-          <label htmlFor="search-title">חיפוש לפי כותרת מלאה</label>
+          <label htmlFor="search-title">
+            חיפוש לפי כותרת מלאה
+          </label>
+
           <div className="field-row">
             <input
               id="search-title"
               dir="ltr"
               value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
+              onChange={event => setSearchInput(event.target.value)}
               placeholder="Search here"
             />
+
             <button className="button dark" type="submit">
               חפש משימה
             </button>
           </div>
         </form>
-    
+
         {showCompletedCount && (
           <div className="count-card">
             <span>משימות שהושלמו</span>
@@ -276,26 +296,26 @@ export default function App() {
       </section>
 
       <section className="panel create-panel">
-
-
         <form className="create-form" onSubmit={handleAddTask}>
           <div className="field-group grow">
             <label htmlFor="new-title">כותרת המשימה</label>
+
             <input
               id="new-title"
               dir="ltr"
               value={newTitle}
-              onChange={(event) => setNewTitle(event.target.value)}
+              onChange={event => setNewTitle(event.target.value)}
               placeholder="Type task here"
             />
           </div>
 
           <div className="field-group">
             <label htmlFor="new-priority">עדיפות</label>
+
             <select
               id="new-priority"
               value={newPriority}
-              onChange={(event) => setNewPriority(event.target.value)}
+              onChange={event => setNewPriority(event.target.value)}
             >
               <option value="high">גבוהה</option>
               <option value="medium">בינונית</option>
@@ -303,13 +323,18 @@ export default function App() {
             </select>
           </div>
 
-          <button className="button primary add-button" type="submit">
+          <button
+            className="button primary add-button"
+            type="submit"
+          >
             הוסף משימה
           </button>
         </form>
       </section>
 
-      {feedback && <div className="feedback">{feedback}</div>}
+      {feedback && (
+        <div className="feedback">{feedback}</div>
+      )}
 
       <section className="tasks-section">
         <div className="tasks-heading">
@@ -317,7 +342,6 @@ export default function App() {
             <p className="eyebrow">תוצאה נוכחית</p>
             <h2>{viewTitles[view]}</h2>
           </div>
-
         </div>
 
         {!hasValidReadResult ? (
@@ -328,8 +352,11 @@ export default function App() {
         ) : displayedTasks.length === 0 ? (
           <div className="empty-state">
             <strong>
-              {view === "search" ? "לא נמצאה משימה בשם זה" : "אין משימות להצגה"}
+              {view === "search"
+                ? "לא נמצאה משימה בשם זה"
+                : "אין משימות להצגה"}
             </strong>
+
             <p>
               {view === "search"
                 ? "בדקו שהוזנה הכותרת המלאה ושפונקציית החיפוש הושלמה."
@@ -338,23 +365,27 @@ export default function App() {
           </div>
         ) : (
           <div className="task-grid">
-            {displayedTasks.map((task) => (
+            {displayedTasks.map(task => (
               <article className="task-card" key={task.id}>
                 <div className="task-card-top">
                   <span className="task-id">#{task.id}</span>
+
                   <span
                     className={`status-badge ${
                       task.completed ? "completed" : "open"
                     }`}
                   >
-                    {task.completed ? "הושלמה" : "לא הושלמה"}
+                    {task.completed
+                      ? "הושלמה"
+                      : "לא הושלמה"}
                   </span>
                 </div>
 
                 <h3 dir="ltr">{task.title}</h3>
 
                 <div className={`priority priority-${task.priority}`}>
-                  עדיפות {priorityLabels[task.priority] ?? task.priority}
+                  עדיפות{" "}
+                  {priorityLabels[task.priority] ?? task.priority}
                 </div>
 
                 <div className="task-actions">
@@ -363,19 +394,30 @@ export default function App() {
                     type="button"
                     onClick={() => handleToggleTask(task.id)}
                   >
-                    {task.completed ? "החזר ללא הושלמה" : "סמן כהושלמה"}
+                    {task.completed
+                      ? "החזר ללא הושלמה"
+                      : "סמן כהושלמה"}
                   </button>
 
                   <form
                     className="priority-form"
-                    onSubmit={(event) => handlePriorityUpdate(event, task.id)}
+                    onSubmit={event =>
+                      handlePriorityUpdate(event, task.id)
+                    }
                   >
-                    <select name="priority" defaultValue={task.priority}>
+                    <select
+                      name="priority"
+                      defaultValue={task.priority}
+                    >
                       <option value="high">גבוהה</option>
                       <option value="medium">בינונית</option>
                       <option value="low">נמוכה</option>
                     </select>
-                    <button className="button small secondary" type="submit">
+
+                    <button
+                      className="button small secondary"
+                      type="submit"
+                    >
                       עדכן עדיפות
                     </button>
                   </form>
